@@ -1,27 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLazyGetStoreByIdQuery } from "@/store/api/storeApi";
+import { useAppDispatch } from "@/store/hooks";
+import { setStore } from "@/store/storeSlice";
 import Header from "@/components/Header";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import RegisterCard from "@/components/RegisterCard";
-import { mockStores } from "@/data/mockStores";
-import type { Store } from "@/data/mockStores";
 
 export default function Home() {
   const [storeNumber, setStoreNumber] = useState("");
-  const [currentStore, setCurrentStore] = useState<Store | null>(null);
+  const dispatch = useAppDispatch();
+  
+  const [
+    getStore, 
+    { data: storeData, error, isLoading, isFetching }
+  ] = useLazyGetStoreByIdQuery();
 
   const handleLoadStore = () => {
-    const store = mockStores[storeNumber];
-    if (store) {
-      setCurrentStore(store);
-    } else {
-      // You might want to add error handling here
-      setCurrentStore(null);
+    if (storeNumber) {
+      getStore(storeNumber);
     }
   };
+
+  // Update store in Redux when API data arrives
+  useEffect(() => {
+    if (storeData) {
+      dispatch(setStore(storeData));
+    }
+  }, [storeData, dispatch]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -42,20 +51,32 @@ export default function Home() {
               <Button 
                 variant="default" 
                 className="bg-blue-600 hover:bg-blue-700"
+                disabled={isLoading || isFetching}
                 onClick={handleLoadStore}
               >
-                Load Store
+                {isLoading || isFetching ? 'Loading...' : 'Load Store'}
               </Button>
             </div>
+            {error && (
+              <p className="text-sm text-red-500 mt-2">
+                {error instanceof Error ? error.message : 'Failed to load store'}
+              </p>
+            )}
           </CardContent>
         </Card>
 
-        {currentStore && (
+        {/* Register grid - Only visible when store is loaded */}
+        {storeData && (
           <div className="w-full mt-8">
-            <h2 className="text-xl font-semibold mb-4">Registers - Store {currentStore.id}</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              Registers - Store {storeData.id}
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {currentStore.registers.map((register) => (
-                <RegisterCard key={register.id} register={register} />
+              {storeData.registers.map((register) => (
+                <RegisterCard 
+                  key={register.id} 
+                  register={register}
+                />
               ))}
             </div>
           </div>

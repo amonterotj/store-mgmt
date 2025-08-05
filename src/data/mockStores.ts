@@ -115,5 +115,101 @@ export const mockStores: Record<string, Store> = {
         ]
       }
     ]
+  },
+  "002": {
+    id: "002",
+    registers: [
+      {
+        id: "R101",
+        name: "Main Register",
+        status: "online",
+        lastActive: "2024-03-20 10:55",
+        paymentTerminals: [
+          {
+            id: "T101",
+            model: "Ingenico Lane 3000",
+            status: "connected",
+            attachedPrinters: [
+              { id: "P101", model: "Star TSP100", status: "connected" }
+            ]
+          },
+          {
+            id: "T102",
+            model: "Clover Flex",
+            status: "connected",
+            attachedPrinters: []
+          }
+        ]
+      },
+      {
+        id: "R102",
+        name: "Service Desk",
+        status: "online",
+        lastActive: "2024-03-20 10:50",
+        paymentTerminals: [
+          {
+            id: "T103",
+            model: "Verifone P400",
+            status: "connected",
+            attachedPrinters: [
+              { id: "P102", model: "EPSON TM-T88V", status: "connected" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "003": {
+    id: "003",
+    registers: [
+      {
+        id: "R201",
+        name: "Front Counter",
+        status: "online",
+        lastActive: "2024-03-20 11:00",
+        paymentTerminals: [
+          {
+            id: "T201",
+            model: "Clover Flex",
+            status: "connected",
+            attachedPrinters: [
+              { id: "P201", model: "Star TSP100", status: "connected" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "R202",
+        name: "Drive Through",
+        status: "maintenance",
+        lastActive: "2024-03-19 18:30",
+        paymentTerminals: [
+          {
+            id: "T202",
+            model: "Ingenico Lane 3000",
+            status: "disconnected",
+            attachedPrinters: [
+              { id: "P202", model: "EPSON TM-T88V", status: "disconnected" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "R203",
+        name: "Mobile Order Station",
+        status: "online",
+        lastActive: "2024-03-20 10:45",
+        paymentTerminals: [
+          {
+            id: "T203",
+            model: "Verifone P400",
+            status: "connected",
+            attachedPrinters: [
+              { id: "P203", model: "Star TSP100", status: "connected" }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }; 
